@@ -66,11 +66,11 @@
 		><input type="range" bind:value={depth} min={0.1} max={3} step={0.1} /> depth</label
 	>
 	<label
-		><input type="range" bind:value={azimuth} min={-180} max={180} step={1} /> azimuth</label
-	>{azimuth}
+		><input type="range" bind:value={azimuth} min={-180} max={180} step={1} /> azimuth {azimuth}</label
+	>
 	<label
-		><input type="range" bind:value={tilt} min={-90} max={90} step={1} /> tilt</label
-	>{tilt}
+		><input type="range" bind:value={tilt} min={-90} max={90} step={1} /> tilt {tilt}</label
+	>
 </div>
 
 <style>
