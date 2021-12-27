@@ -1,18 +1,23 @@
-<script>
+<script lang="ts">
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
 
 	let width = 1;
-	let height = 1;
-	let depth = 1;
+	let height = 0.01;
+	let depth = 2;
 	let azimuth = 0;
-	let tilt = 45
+	let tilt = 45;
 
-	let spin = 0;
+	$: azimuthRadians = (azimuth * Math.PI) / 180;
+	$: tiltRadians = (tilt * Math.PI) / 180;
 
-	SC.onFrame(() => {
-		// spin += 0.01;
-	});
+	let material = {
+		color: '#cccccc',
+		metalness: 0.8,
+		roughness: 0.4,
+		opacity: 0.5,
+		transparent: false
+	};
 </script>
 
 <SC.Canvas
@@ -36,24 +41,36 @@
 
 	<SC.Mesh
 		geometry={new THREE.BoxGeometry()}
-		material={new THREE.MeshStandardMaterial({ color: 0xff3e00 })}
+		material={new THREE.MeshStandardMaterial(material)}
 		scale={[width, height, depth]}
-		rotation={[0, spin, 0]}
+		rotation={[0, azimuthRadians, tiltRadians]}
+		position={[0, 1, 1]}
 		castShadow
 	/>
 
-	<SC.PerspectiveCamera position={[1, 1, 3]} />
+	<SC.PerspectiveCamera position={[0, 2, 6]} />
 	<SC.OrbitControls enableZoom={false} maxPolarAngle={Math.PI * 0.51} />
 	<SC.AmbientLight intensity={0.6} />
-	<SC.DirectionalLight intensity={0.6} position={[-2, 3, 2]} shadow={{ mapSize: [2048, 2048] }} />
+	<SC.DirectionalLight
+		intensity={0.6}
+		position={[-2, 3, 2]}
+		shadow={{ mapSize: [2048, 2048] }}
+	/>
 </SC.Canvas>
 
 <div class="controls">
-	<label><input type="range" bind:value={width} min={0.1} max={3} step={0.1} /> width</label>
-	<label><input type="range" bind:value={height} min={0.1} max={3} step={0.1} /> height</label>
-	<label><input type="range" bind:value={depth} min={0.1} max={3} step={0.1} /> depth</label>
-	<label><input type="range" bind:value={azimuth} min={-180} max={180} step={1} /> azimuth</label>
-	<label><input type="range" bind:value={tilt} min={0} max={90} step={1} /> tilt</label>
+	<label
+		><input type="range" bind:value={width} min={0.1} max={3} step={0.1} /> width</label
+	>
+	<label
+		><input type="range" bind:value={depth} min={0.1} max={3} step={0.1} /> depth</label
+	>
+	<label
+		><input type="range" bind:value={azimuth} min={-180} max={180} step={1} /> azimuth</label
+	>{azimuth}
+	<label
+		><input type="range" bind:value={tilt} min={-90} max={90} step={1} /> tilt</label
+	>{tilt}
 </div>
 
 <style>
